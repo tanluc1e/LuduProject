@@ -48,7 +48,7 @@ if (isset($_POST['register_btn'])) {
             $_SESSION['message'] = "Email je vec registrovan";  // added ;
             echo "<script>
             alert('Email have already')
-            window.location.href='login.php'
+            window.location.href='login2.php'
         </script>";
         }
     } elseif (!empty($user_name) && !empty($password) && !empty($user_mail)) {
@@ -59,6 +59,20 @@ if (isset($_POST['register_btn'])) {
         header("location: login2.php");
         die;
     }
+
+    //CHECK EMPTY
+if ($password == ""){
+    echo "<script>
+        alert('Please type your password')
+        window.location.href='login2.php'
+        </script>";
+}
+if ($user_name == ""){
+    echo "<script>
+        alert('Please type your user name')
+        window.location.href='login2.php'
+        </script>";
+}
 }
 ?>
 
