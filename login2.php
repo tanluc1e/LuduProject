@@ -34,33 +34,30 @@ if (isset($_POST["login"])) {
         }
 }
         /* SIGN UP */
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
+if (isset($_POST['register_btn'])) {
     $user_name = $_POST['user_name'];
     $user_mail = $_POST['user_mail'];
     $password = $_POST['password'];
+    $sql = "SELECT * FROM users WHERE (user_mail='$user_mail')";
+    $query = "insert into users (user_mail,user_name,password) values('$user_mail','$user_name','$password')";
+    $db = mysqli_connect("localhost", "tanluc1", "tanluc1", "shikoba");
+    $res = mysqli_query($db, $sql);
+    if (mysqli_num_rows($res) > 0) {
+        $row = mysqli_fetch_assoc($res);
+        if ($user_mail == $row['user_mail']) {  // changed `else` to `elseif` to include the condition, `else` doesn't accept conditional checks
+            $_SESSION['message'] = "Email je vec registrovan";  // added ;
+            echo "<script>
+            alert('Email have already')
+            window.location.href='login.php'
+        </script>";
+        }
+    } elseif (!empty($user_name) && !empty($password) && !empty($user_mail)) {
+        
 
+        mysqli_query($db, $query);
 
-    if (!empty($user_name) && !empty($password) && !empty($user_mail)) {
-        $query = "insert into users (user_mail,user_name,password) values('$user_mail','$user_name','$password')";
-
-        mysqli_query($conn, $query);
-
-        header("location: login.php");
+        header("location: login2.php");
         die;
-    }
-
-    //CHECK EMPTY
-    if ($password == ""){
-      echo "<script>
-              alert('Please type your password')
-              window.location.href='login.php'
-          </script>";
-    }
-    if ($user_name == ""){
-      echo "<script>
-      alert('Please type your user name')
-      window.location.href='login.php'
-      </script>";
     }
 }
 ?>
@@ -120,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
       <input type="text" id="user_name" name="user_name" placeholder="Type your name"/>
       <input type="email" id="user_mail" name="user_mail" placeholder="Type your Email" />
       <input type="password" id="password" name="password" placeholder="Type your password" />
-      <button type="submit">Sign Up</button>
+      <button type="submit" name="register_btn">Sign Up</button>
     </form>
   </div>
   <!-------------------------------------------------------------- SIGN IN ------------------------------------------------------>
