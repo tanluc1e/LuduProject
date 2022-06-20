@@ -22,7 +22,7 @@ if (isset($_POST["login"])) {
     $_SESSION['id'] = $row['id'];
 
     if ($email = $row1["user_name"] and $password = $row1["password"]) {
-        header('location: ../panel/index.php');}
+        header('location: panel/index.php');}
         elseif($email = $row["user_mail"] and $password = $row["password"]){
           header('location: index.php');
     }
