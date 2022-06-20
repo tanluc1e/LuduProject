@@ -5,19 +5,35 @@ if (isset($_SESSION['user_mail']) == false) {
     exit();
 } 
 $get_user_name = $_SESSION['user_name'];
+$get_user_mail = $_SESSION['user_mail'];
 //print_r($_POST)
 $error = "";
 if(isset($_POST['btnchangepassword']) == true){
-    //$oldpassword = $_POST['pass_old'];
+    $password = $_SESSION['password'];
     $newpassword_1 = $_POST['pass_new1'];
     $newpassword_2 = $_POST['pass_new2'];
     $conn = new mysqli('localhost', 'tanluc1', 'tanluc1', 'shikoba');
     $sql = "SELECT * FROM users WHERE user_name = ? AND password = ?";
+
+    $sql2 = "SELECT * FROM users WHERE (user_mail='$get_user_mail')";
+    $db = mysqli_connect("localhost", "tanluc1", "tanluc1", "shikoba");
+    $res = mysqli_query($db, $sql2);
+    if (mysqli_num_rows($res) > 0) {
+        $row = mysqli_fetch_assoc($res);
+        if ($newpassword_1 == $row['password']) {  // changed `else` to `elseif` to include the condition, `else` doesn't accept conditional checks
+            $_SESSION['message'] = "Email je vec registrovan";  // added ;
+            echo "<script>
+            alert('Mật khẩu mới trùng với mật khẩu cũ')
+            window.location.href='changepassword.php'
+        </script>";
+        }
+
     //$stmt = $conn->prepare($sql);
     //$stmt->execute([$get_user_name, $oldpassword]);
     //if($stmt->rowCount() == 0) {$error = "Mật khẩu cũ sai rồi";}
     if(strlen($newpassword_1)<6) {$error = "Mật khẩu mới quá ngắn";}
     if($newpassword_1!=$newpassword_2) {$error = "Mật khẩu mới không giống nhau";}
+    
 
     /* SET PASSWORD */
     if($error==""){
@@ -26,6 +42,7 @@ if(isset($_POST['btnchangepassword']) == true){
       $stmt->execute([$newpassword_1, $get_user_name]);
       echo "Đã cập nhật mật khẩu mới!";
     }
+}
 }
 ?>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
