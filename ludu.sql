@@ -149,7 +149,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `user_mail`, `user_name`, `password`, `date`) VALUES
-(1, 'alikrdnz33@gmail.com', 'Ali Karadeniz', '123456', '2021-12-26 17:00:44');
+(1, 'tanluc1@gmail.com', 'tanluc1', '123456', '2022-6-20 17:00:44');
 
 --
 -- Dökümü yapılmış tablolar için indeksler

@@ -20,8 +20,8 @@ if(isset($_POST['btnchangepassword']) == true){
     $res = mysqli_query($db, $sql2);
     if (mysqli_num_rows($res) > 0) {
         $row = mysqli_fetch_assoc($res);
-        if ($newpassword_1 == $row['password']) {  // changed `else` to `elseif` to include the condition, `else` doesn't accept conditional checks
-            $_SESSION['message'] = "Email je vec registrovan";  // added ;
+        if ($newpassword_1 == $row['password']) { 
+            $_SESSION['message'] = "Trùng mật khẩu";  // added ;
             echo "<script>
             alert('Mật khẩu mới trùng với mật khẩu cũ')
             window.location.href='changepassword.php'
@@ -37,9 +37,9 @@ if(isset($_POST['btnchangepassword']) == true){
 
     /* SET PASSWORD */
     if($error==""){
-      $sql = "UPDATE users SET password = ? WHERE user_name = ?";
+      $sql = "UPDATE users SET password = ? WHERE user_mail = ?";
       $stmt = $conn->prepare($sql);
-      $stmt->execute([$newpassword_1, $get_user_name]);
+      $stmt->execute([$newpassword_1, $get_user_mail]);
       echo "Đã cập nhật mật khẩu mới!";
     }
 }
