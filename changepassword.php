@@ -1,4 +1,5 @@
 <?php 
+//Check nếu chưa có user_mail (chưa đăng nhập) sẽ trả về trang login.php
 if(session_id() == '') session_start();
 if (isset($_SESSION['user_mail']) == false) {
     header("location: login.php");
@@ -6,14 +7,16 @@ if (isset($_SESSION['user_mail']) == false) {
 } 
 $get_user_name = $_SESSION['user_name'];
 $get_user_mail = $_SESSION['user_mail'];
+
+
 //print_r($_POST)
-$error = "";
+$error = ""; 
 $checksuccess = true;
 if(isset($_POST['btnchangepassword']) == true){
     $password = $_SESSION['password'];
-    $oldpassword = $_POST['pass_old'];
-    $newpassword_1 = $_POST['pass_new1'];
-    $newpassword_2 = $_POST['pass_new2'];
+    $oldpassword = md5($_POST['pass_old']);
+    $newpassword_1 = md5($_POST['pass_new1']);
+    $newpassword_2 = md5($_POST['pass_new2']);
     $conn = new mysqli('localhost', 'tanluc1', 'tanluc1', 'shikoba');
     $sql = "SELECT * FROM users WHERE user_name = ? AND password = ?";
 
@@ -50,8 +53,26 @@ if(isset($_POST['btnchangepassword']) == true){
         echo "<center>(Cập nhật mật khẩu thành công!)</center>";
       }
     }
+  }
 }
+
+	/* -------------------------------------- SET USER INFORMATION ------------------------------------------------------ */
+if(isset($_POST['btnsaveinformation']) == true){
+	$address = $_POST['address'];
+	$phone = $_POST['phone'];
+	$get_address = $_SESSION['address'];
+	$get_phone = $_SESSION['phone'];
+
+	$conn = new mysqli('localhost', 'tanluc1', 'tanluc1', 'shikoba');
+	$sql = "UPDATE users SET address = ? , phone = ? WHERE user_mail = ?";
+	$stmt = $conn->prepare($sql);
+	$stmt->execute([$address, $phone, $get_user_mail]);
+	if($checksuccess == true) {
+	  echo "<center>(Cập nhật thông tin thành công)</center>";
+	}
+	
 }
+
 ?>
 
 
@@ -66,17 +87,17 @@ if(isset($_POST['btnchangepassword']) == true){
 		<form method="POST" action="">
       <div class="form-group">
         <p class="helper-text">Old password</p>
-        <input type="password" class="form-control" name="pass_old" required> 
+        <input type="password" class="form-control" name="pass_old" required oninvalid="this.setCustomValidity('Vui lòng nhập mật khẩu cũ')" oninput="setCustomValidity('')"> 
 				<label>Old password</label>
 				<p class="helper-text">Minimum 6 characters</p>
 			</div>
 			<div class="form-group">
-				<input type="password" class="form-control" name="pass_new1" required>
+				<input type="password" class="form-control" name="pass_new1" required oninvalid="this.setCustomValidity('Vui lòng nhập mật khẩu mới')" oninput="setCustomValidity('')">
 				<label>New password</label>
 				<p class="helper-text">Minimum 6 characters</p>
 			</div>
 			<div class="form-group">
-        <input type="password" class="form-control" name="pass_new2" required>
+        <input type="password" class="form-control" name="pass_new2" required oninvalid="this.setCustomValidity('Vui lòng nhập lại mật khẩu mới')" oninput="setCustomValidity('')">
 				<label>Confirm new password</label>
 			</div>
 			<a class="back">Back to My Account</a>
@@ -89,21 +110,22 @@ if(isset($_POST['btnchangepassword']) == true){
 		<span class="line"></span>
 		<h2><?php echo $_SESSION['user_mail'] ?></h2>
 		<span class="line"></span>
-		<form>
+		<form method="POST" action="">
 			<div class="form-group">
-				<input name="Username" type="text" class="form-control" required value="<?php echo $_SESSION['user_name'] ?>">
-				<label>Username</label>
+				<input name="user_name" type="text" class="form-control" required value="<?php echo $_SESSION['user_name'] ?>">
+				<label>User name</label>
 			</div>
 			<div class="form-group">
-				<input name="Address" type="text" class="form-control" required>
+				<input name="address" type="text" class="form-control" required value="<?php echo $_SESSION['address'] ?>">
 				<label>Address</label>
 			</div>
 			<div class="form-group">
-				<input name="phoneNumber" type="phone" class="form-control" required>
+				<input name="phone" type="phone" class="form-control" required value="<?php echo $_SESSION['phone'] ?>">
 				<label>Phone number</label>
 			</div>
-			<a class="change-password">Chanage Password</a>
-			<button type="submit" class="btn">Save</button>
+			<a class="change-password">Change Password</a>
+			<button type="submit" name="btnsaveinformation" class="btn">Save</button>
+      <a href="index.php" class="btn" style="margin-right:8px;">Back</a>
 		</form>
 	</div>
 </div>  
