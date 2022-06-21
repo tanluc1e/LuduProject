@@ -13,10 +13,11 @@ $get_user_mail = $_SESSION['user_mail'];
 $error = ""; 
 $checksuccess = true;
 if(isset($_POST['btnchangepassword']) == true){
-    $password = $_SESSION['password'];
+    $password = md5($_SESSION['password']);
     $oldpassword = md5($_POST['pass_old']);
     $newpassword_1 = md5($_POST['pass_new1']);
     $newpassword_2 = md5($_POST['pass_new2']);
+
     $conn = new mysqli('localhost', 'tanluc1', 'tanluc1', 'shikoba');
     $sql = "SELECT * FROM users WHERE user_name = ? AND password = ?";
 

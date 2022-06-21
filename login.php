@@ -6,8 +6,8 @@ include("mysql/baglan.php");
         /* SIGN IN */
 if (isset($_POST["login"])) {
     $email = $_POST["user_mail"];
-    $password = $_POST['password'];
-    $sql = "SELECT * FROM users WHERE user_mail='$email'AND password='$password'";
+    $password = md5($_POST['password']);
+    $sql = "SELECT * FROM users WHERE user_mail='$email'AND password= '$password'";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
 
@@ -38,7 +38,7 @@ if (isset($_POST["login"])) {
 if (isset($_POST['register_btn'])) {
     $user_name = $_POST['user_name'];
     $user_mail = $_POST['user_mail'];
-    $password = $_POST['password'];
+    $password = md5($_POST['password']);
     $sql = "SELECT * FROM users WHERE (user_mail='$user_mail')";
     $query = "insert into users (user_mail,user_name,password) values('$user_mail','$user_name','$password')";
     $db = mysqli_connect("localhost", "tanluc1", "tanluc1", "shikoba");
