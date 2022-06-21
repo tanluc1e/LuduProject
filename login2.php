@@ -6,7 +6,7 @@ include("mysql/baglan.php");
         /* SIGN IN */
 if (isset($_POST["login"])) {
     $email = $_POST["user_mail"];
-    $password = $_POST["password"];
+    $password = $_POST['password'];
     $sql = "SELECT * FROM users WHERE user_mail='$email'AND password='$password'";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
@@ -18,8 +18,9 @@ if (isset($_POST["login"])) {
     $_SESSION['user_mail'] = $row['user_mail'];
     $_SESSION['user_name'] = $row['user_name'];
     $_SESSION['password'] = $row['password'];
-
     $_SESSION['id'] = $row['id'];
+    $_SESSION['phone'] = $row['phone'];
+    $_SESSION['address'] = $row['address'];
 
     if ($email = $row1["user_name"] and $password = $row1["password"]) {
         header('location: panel/index.php');}
@@ -28,7 +29,7 @@ if (isset($_POST["login"])) {
     }
         else{
             echo "<script>
-            alert('Error! Please check your email and password.')
+            alert('Wrong! Please check your email and password.')
             window.location.href='login2.php'
         </script>";
         }
@@ -44,8 +45,8 @@ if (isset($_POST['register_btn'])) {
     $res = mysqli_query($db, $sql);
     if (mysqli_num_rows($res) > 0) {
         $row = mysqli_fetch_assoc($res);
-        if ($user_mail == $row['user_mail']) {  // changed `else` to `elseif` to include the condition, `else` doesn't accept conditional checks
-            $_SESSION['message'] = "Email je vec registrovan";  // added ;
+        if ($user_mail == $row['user_mail']) {  
+            $_SESSION['message'] = "Email have already";
             echo "<script>
             alert('Email have already')
             window.location.href='login2.php'
@@ -60,19 +61,6 @@ if (isset($_POST['register_btn'])) {
         die;
     }
 
-    //CHECK EMPTY
-if ($password == ""){
-    echo "<script>
-        alert('Please type your password')
-        window.location.href='login2.php'
-        </script>";
-}
-if ($user_name == ""){
-    echo "<script>
-        alert('Please type your user name')
-        window.location.href='login2.php'
-        </script>";
-}
 }
 ?>
 
@@ -128,9 +116,9 @@ if ($user_name == ""){
   <div class="form-container sign-up-container">
     <form method="POST">
       <h1>Create Account</h1>
-      <input type="text" id="user_name" name="user_name" placeholder="Type your name"/>
-      <input type="email" id="user_mail" name="user_mail" placeholder="Type your Email" />
-      <input type="password" id="password" name="password" placeholder="Type your password" />
+      <input type="text" id="user_name" name="user_name" placeholder="Type your name" required/>
+      <input type="email" id="user_mail" name="user_mail" placeholder="Type your Email" required/>
+      <input type="password" id="password" name="password" placeholder="Type your password" required/>
       <button type="submit" name="register_btn">Sign Up</button>
     </form>
   </div>
