@@ -5,32 +5,51 @@ if (isset($_SESSION['user_mail']) == false) {
     header("location: login.php");
     exit();
 } 
+
+//GET CURRENT VALUES (Address, Phone)
+$conn_gcv = mysqli_connect("localhost", "tanluc1", "tanluc1", "ludu");
+$gcv_mail = $_SESSION['user_mail'];
+$gcv_sql = "SELECT * FROM Users WHERE user_mail='$gcv_mail'";
+$gcv_query = mysqli_query($conn_gcv, $gcv_sql);
+if ($row = mysqli_fetch_assoc($gcv_query)) { 
+    $current_address = $row['address'];
+    $current_phone = $row['phone'];
+}
+
+//GET VALUES FROM SESSION
 $get_user_name = $_SESSION['user_name'];
 $get_user_mail = $_SESSION['user_mail'];
 
-
-//print_r($_POST)
+// VALUES TO USE ACTIVE COMMAND 
 $error = ""; 
 $checksuccess = true;
+
+	/* -------------------------------------- SET USER PASSWORD ------------------------------------------------------ */
 if(isset($_POST['btnchangepassword']) == true){
+
+	//ENCRYPTION OLD & NEW PASSWORD
     $password = md5($_SESSION['password']);
     $oldpassword = md5($_POST['pass_old']);
     $newpassword_1 = md5($_POST['pass_new1']);
     $newpassword_2 = md5($_POST['pass_new2']);
 
-    $conn = new mysqli('localhost', 'tanluc1', 'tanluc1', 'shikoba');
+	//SELECT DATABASE
+    $conn = new mysqli('localhost', 'tanluc1', 'tanluc1', 'ludu');
     $sql = "SELECT * FROM users WHERE user_name = ? AND password = ?";
-
     $sql2 = "SELECT * FROM users WHERE (user_mail='$get_user_mail')";
-    $db = mysqli_connect("localhost", "tanluc1", "tanluc1", "shikoba");
+    $db = mysqli_connect("localhost", "tanluc1", "tanluc1", "ludu");
+
+	//CHECK EACH ROW FROM DATABASE TO GET VALUES
     $res = mysqli_query($db, $sql2);
     if (mysqli_num_rows($res) > 0) {
         $row = mysqli_fetch_assoc($res);
+		//IF NPW = OPW, RETURN CHECKSUCCESS = FALSE
         if ($newpassword_1 == $row['password']) { 
             $_SESSION['message'] = "Trùng mật khẩu";  // added ;
             echo "<center>(Mật khẩu mới trùng mật khẩu cũ!)</center>";
             $checksuccess = false;
         } 
+		//IF POST SESSION != OPW, RETURN CHECKSUCCESS = FALSE
         if ($oldpassword != $row['password']) { 
           $_SESSION['message'] = "Sai mật khẩu";  // added ;
           echo "<center>(Sai mật khẩu cũ!)</center>";
@@ -38,42 +57,50 @@ if(isset($_POST['btnchangepassword']) == true){
           $error = "Error!";
       }
 
-    //$stmt = $conn->prepare($sql);
-    //$stmt->execute([$get_user_name, $oldpassword]);
-    //if($stmt->rowCount() == 0) {$error = "Mật khẩu cũ sai rồi";}
+	//CHECK NEW PASSWORD LENGHT AND SAME
     if(strlen($newpassword_1)<6) {echo "<center>(Mật khẩu quá ngắn!)</center>"; $checksuccess = false; $error = "Error!";} 
     if($newpassword_1!=$newpassword_2) {echo "<center>(Mật khẩu mới không giống nhau!)</center>"; $checksuccess = false; $error = "Error!";}
     
 
-    /* SET PASSWORD */
+    /* SET NEW PASSWORD */
     if($error==""){
-      $sql = "UPDATE users SET password = ? WHERE user_mail = ?";
-      $stmt = $conn->prepare($sql);
-      $stmt->execute([$newpassword_1, $get_user_mail]);
-      if($checksuccess == true) {
-        echo "<center>(Cập nhật mật khẩu thành công!)</center>";
-      }
+
+		//SELECT DATABASE AND PREPARE A SELECT STATEMENT
+    	$sql = "UPDATE users SET password = ? WHERE user_mail = ?";
+    	$stmt = $conn->prepare($sql);
+
+		//ADD POST VALUES FROM SESSION TO DATABASE
+    	$stmt->execute([$newpassword_1, $get_user_mail]);
+    	if($checksuccess == true) {
+       		echo "<center>(Cập nhật mật khẩu thành công!)</center>";
+      	}
     }
   }
 }
 
 	/* -------------------------------------- SET USER INFORMATION ------------------------------------------------------ */
 if(isset($_POST['btnsaveinformation']) == true){
+
+	//POST VALUES TO SESSION
 	$address = $_POST['address'];
 	$phone = $_POST['phone'];
+
+	//GET VALUES FROM SESSION
 	$get_address = $_SESSION['address'];
 	$get_phone = $_SESSION['phone'];
 
-	$conn = new mysqli('localhost', 'tanluc1', 'tanluc1', 'shikoba');
+	//SELECT DATABASE AND PREPARE A SELECT STATEMENT
+	$conn = new mysqli('localhost', 'tanluc1', 'tanluc1', 'ludu');
 	$sql = "UPDATE users SET address = ? , phone = ? WHERE user_mail = ?";
 	$stmt = $conn->prepare($sql);
+
+	//ADD POST VALUES FROM SESSION TO DATABASE
 	$stmt->execute([$address, $phone, $get_user_mail]);
 	if($checksuccess == true) {
 	  echo "<center>(Cập nhật thông tin thành công)</center>";
+	  header("Refresh:0; url=changepassword.php");
 	}
-	
 }
-
 ?>
 
 
@@ -117,11 +144,11 @@ if(isset($_POST['btnsaveinformation']) == true){
 				<label>User name</label>
 			</div>
 			<div class="form-group">
-				<input name="address" type="text" class="form-control" required value="<?php echo $_SESSION['address'] ?>">
+				<input name="address" type="text" class="form-control" required value="<?php echo $current_address ?>">
 				<label>Address</label>
 			</div>
 			<div class="form-group">
-				<input name="phone" type="phone" class="form-control" required value="<?php echo $_SESSION['phone'] ?>">
+				<input name="phone" type="phone" class="form-control" required value="<?php echo $current_phone ?>">
 				<label>Phone number</label>
 			</div>
 			<a class="change-password">Change Password</a>
