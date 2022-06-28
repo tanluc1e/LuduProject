@@ -1,0 +1,160 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);
+.snip1378 {
+  font-family: 'Roboto', Arial, sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 500;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.snip1378 * {
+  box-sizing: border-box;
+}
+.snip1378 li {
+  display: inline-block;
+  list-style: outside none none;
+  margin: 0.5em 1em;
+  overflow: hidden;
+  position: relative;
+  border-radius: 3px;
+}
+.snip1378 li:before,
+.snip1378 li:after {
+  display: block;
+}
+.snip1378 li:before {
+  bottom: 0%;
+}
+.snip1378 li:after {
+  bottom: 75%;
+}
+.snip1378 a {
+  backface-visibility: hidden;
+  color: #e6e6e6;
+  display: block;
+  padding: 0.5em 1em;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+}
+.snip1378 a:before {
+  bottom: 25%;
+}
+.snip1378 a:after {
+  bottom: 50%;
+}
+.snip1378 a:hover {
+  color: #ffffff;
+}
+.snip1378 li:before,
+.snip1378 li:after,
+.snip1378 a:before,
+.snip1378 a:after {
+  background-color: #d9534f;
+  position: absolute;
+  height: 25%;
+  width: 100%;
+  left: 0;
+  content: '';
+  z-index: -1;
+  opacity: 0;
+  -webkit-transition: all 0.25s steps(3);
+  transition: all 0.25s steps(3);
+}
+.snip1378 li:hover:before,
+.snip1378 li.current:before,
+.snip1378 li:hover:after,
+.snip1378 li.current:after,
+.snip1378 li:hover a:before,
+.snip1378 li.current a:before,
+.snip1378 li:hover a:after,
+.snip1378 li.current a:after {
+  opacity: 1;
+}
+.snip1378 li:hover:before,
+.snip1378 li.current:before {
+  -webkit-transition-delay: 0s;
+  transition-delay: 0s;
+}
+.snip1378 li:hover:after,
+.snip1378 li.current:after {
+  -webkit-transition-delay: 0.15s;
+  transition-delay: 0.15s;
+}
+.snip1378 li:hover a:before,
+.snip1378 li.current a:before {
+  -webkit-transition-delay: 0.05s;
+  transition-delay: 0.05s;
+}
+.snip1378 li:hover a:after,
+.snip1378 li.current a:after {
+  -webkit-transition-delay: 0.1s;
+  transition-delay: 0.1s;
+}
+/* Demo purposes only */
+body {
+  background-color: #212121;
+}
+
+/* button css */
+@import url(https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css);
+.snip1565 {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-perspective: 50em;
+  perspective: 50em;
+  -webkit-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+  background-color: #7e1946;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: 0 0 5px rgba(0, 0, 0, 0.5);
+  color: #e6e6e6;
+  display: inline-block;
+  font-size: 40px;
+  height: 75px;
+  line-height: 75px;
+  margin: 40px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  width: 75px;
+}
+
+.snip1565:before {
+  color: #fff;
+  text-shadow: 1px 1px 5px #000000;
+  opacity: 0.75;
+}
+
+.snip1565:after {
+  -webkit-transition: all 0.45s ease;
+  transition: all 0.45s ease;
+  -webkit-transform-origin: 100% 0;
+  -ms-transform-origin: 100% 0;
+  transform-origin: 100% 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 50%;
+  bottom: 0;
+  content: '';
+  background-color: #69153a;
+  border-radius: 5px 0 0 5px;
+  z-index: -1;
+}
+
+.snip1565:hover,
+.snip1565:active,
+.snip1565.hover {
+  color: #7e1946;
+  background-color: #1d5599;
+}
+
+.snip1565:hover:after,
+.snip1565:active:after,
+.snip1565.hover:after {
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+  background-color: #2468bb;
+}

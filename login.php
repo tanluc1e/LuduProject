@@ -2,6 +2,13 @@
 session_start();
 error_reporting(0);
 
+//Kiểm tra nếu đã đăng nhập (get user_mail == true) sẽ không cho truy cập trang login.php nữa, trả về index.php
+if(session_id() == '') session_start();
+if (isset($_SESSION['user_mail']) == true) {
+    header("location: index.php");
+    exit();
+} 
+
 include("mysql/baglan.php");
         /* SIGN IN */
 if (isset($_POST["login"])) {
@@ -15,6 +22,7 @@ if (isset($_POST["login"])) {
     $result1 = $conn->query($sql1);
     $row1 = $result1->fetch_assoc();
 
+    // Lấy giá trị từ form database
     $_SESSION['user_mail'] = $row['user_mail'];
     $_SESSION['user_name'] = $row['user_name'];
     $_SESSION['password'] = $row['password'];
@@ -29,7 +37,7 @@ if (isset($_POST["login"])) {
     }
         else{
             echo "<script>
-            alert('Wrong! Please check your email and password.')
+            alert('Lỗi! Vui lòng kiểm tra lại email và mật khẩu!')
             window.location.href='login.php'
         </script>";
         }
@@ -41,14 +49,14 @@ if (isset($_POST['register_btn'])) {
     $password = md5($_POST['password']);
     $sql = "SELECT * FROM users WHERE (user_mail='$user_mail')";
     $query = "insert into users (user_mail,user_name,password) values('$user_mail','$user_name','$password')";
-    $db = mysqli_connect("localhost", "tanluc1", "tanluc1", "shikoba");
+    $db = mysqli_connect("localhost", "tanluc1", "tanluc1", "ludu");
     $res = mysqli_query($db, $sql);
     if (mysqli_num_rows($res) > 0) {
         $row = mysqli_fetch_assoc($res);
         if ($user_mail == $row['user_mail']) {  
             $_SESSION['message'] = "Email have already";
             echo "<script>
-            alert('Email have already')
+            alert('Email đã được sử dụng')
             window.location.href='login.php'
         </script>";
         }
@@ -70,7 +78,8 @@ if (isset($_POST['register_btn'])) {
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Ludu - Sign in/out</title>
+  <title>LUDU - Đăng ký/Đăng nhập</title>
+  <link rel="icon" type="image/jpg" href="images/logo1.png"/>
   <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">

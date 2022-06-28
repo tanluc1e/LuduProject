@@ -9,7 +9,7 @@
 	}
 </style>
 <div class="container">
-	<h1 class="page-header text-center">ÜRÜNLER VE KATEGORİLER</h1>
+	<h1 class="page-header text-center text-danger">PRODUCTS AND CATEGORIES</h1>
 	<ul class="nav nav-tabs">
 		<?php
 			$sql="select * from category order by categoryid asc limit 1";
@@ -58,7 +58,7 @@
 											<img src="<?php if(empty($pfrow['image'])){echo "upload/noimage.jpg";} else{echo $pfrow['image'];} ?>" height="225px;" width="100%">
 										</div>
 										<div class="panel-footer text-center">
-											 <?php echo number_format($pfrow['price'], 2);?> TL
+											 <?php echo number_format($pfrow['price'], 3);?> VND
 										</div>
 									</div>
 								</div>
@@ -99,7 +99,7 @@
 											<img src="<?php if($prow['image']==''){echo "upload/noimage.jpg";} else{echo $prow['image'];} ?>" height="" width="">
 										</div>
 										<div class="panel-footer text-center">
-											&#8369; <?php echo number_format($prow['price'], 2); ?>
+											<?php echo number_format($prow['price'], 3); ?> VND
 										</div>
 									</div>
 								</div>

@@ -18,7 +18,6 @@ if (isset($_SESSION['user_mail']) == true) {
 
 ?>
 
-
 <!doctype html>
 <html lang="tr">
 <head>
@@ -36,13 +35,71 @@ if (isset($_SESSION['user_mail']) == true) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
-
-
+    <!--Black Background-->
     <link rel="stylesheet" href="./css-file/design2.css">
     <link rel="stylesheet" href="./script.js">
     <link rel="stylesheet" href="./css-file/style.css">
-    <!--Black Background-->
     <style>
+
+        /*------------------------------------------------
+           Home Page
+       -------------------------------------------------*/
+
+        .hexagon-item:first-child {
+            margin-left: 0;
+        }
+        
+        .container-introduce{
+            margin-bottom: 30px;
+            margin-top: 35px;
+        }
+        .page-home {
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            vertical-align: middle;
+            border-top: 4px solid #d9534f;
+        }
+
+        .page-home .overlay {
+            background-color: rgba(14, 17, 24, 0.97);
+        }
+
+        .pt-table {
+            display: table;
+            width: 100%;
+            height: -webkit-calc(100vh - 4px);
+            height: -moz-calc(100vh - 4px);
+            height: calc(100vh - 4px);
+        }
+
+        .pt-tablecell {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .overlay {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .relative {
+            position: relative;
+        }
+
+        .preloader.active .loading-mask {
+            width: 0;
+        }
+        /* end */
+        
+        h5{
+            font-weight: 400;
+            font-size: 3rem;
+        }
+
         body {
             background: url(images/bg.jpg) no-repeat center center fixed;
             -webkit-background-size: cover;
@@ -94,13 +151,14 @@ if (isset($_SESSION['user_mail']) == true) {
             margin-bottom: 2px;
         }
 
+
     </style>
     <!--Black Background-->
-    <title>LUDU - Trang chủ</title>
+    <title>LUDU - Giới thiệu</title>
 </head>
 <body>
-
 <!--Header Start-->
+
 <header class="p-3 bg-dark text-white">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center">
@@ -111,10 +169,10 @@ if (isset($_SESSION['user_mail']) == true) {
             </a>
             <img src="images/logo1.png" width="100px"/>
             <ul class="snip1378 me-lg-auto" style="margin-left: 120px;"> 
-                <li><a href="index.php" class="nav-link px-2 text-secondary">HOME</a></li>
+                <li><a href="index.php" class="nav-link px-2 text-white">HOME</a></li>
                 <li><a href="menu/menu.php" class="nav-link px-2 text-white">MENU</a></li>
                 <li><a href="product.php" class="nav-link px-2 text-white">PRODUCT</a></li>
-                <li><a href="introduce.php" class="nav-link px-2 text-white">INTRODUCE</a></li>
+                <li><a href="introduce.php" class="nav-link px-2 text-secondary">INTRODUCE</a></li>
                 <li><a href="aboutUs.php" class="nav-link px-2 text-white">ABOUT US</a></li>
             </ul>
             <div class="col-md-3 col-lg-2 button-outline">
@@ -138,84 +196,76 @@ if (isset($_SESSION['user_mail']) == true) {
                             <a href="login.php" type="button" class="btn btn-outline-light me-2">Sign in/out</a>
                             <?php
                         }
-                        ?>  
+                        ?>
+                          
                     </div>
+
+            
             </div>
+            
+            
         </div>
     </div>
 </header>
-<!--Header End-->
-<div class="container-fluid">
 
-    <!-- Carousel Start -->
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                    aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner" style=" width:100%; height: 700px !important;">
-            <div class="carousel-item active">
-                <img src="./images/index/tsvety-frukty-iagody.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="./images/index/6-63037_fruits.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="./images/index/still-life-with-flowers-fruits-table_392895-86331.webp" class="d-block w-100" alt="...">
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-    <!--Carousel End-->
-    <br>
-    <br>
-    <!--Cards Start-->
-    <div class="card-group">
-        <div class="card bg-dark">
-            <img src="https://i.pinimg.com/564x/80/c4/b7/80c4b726ef6187a25ba9d1eb09c12656.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <div class="d-grid gap-2 col-6 mx-auto">
-                    <a class="btn btn-danger text-capitalize"  href="menu/menu.php"
-                        type="button">MENU</a>
+<!--Header End-->
+<main class="site-wrapper">
+    <div class="pt-table desktop-768">
+        <div class="pt-tablecell page-home relative" style="background-image: url(https://scontent.fesb3-2.fna.fbcdn.net/v/t1.6435-9/37904225_688725644825738_6160377175833837568_n.jpg?_nc_cat=107&ccb=1-5&_nc_sid=e3f864&_nc_ohc=mmYcEQ-g-N4AX9lbi4P&_nc_ht=scontent.fesb3-2.fna&oh=00_AT9iEiiSnIY863LcnCZ-Mg5islvP-jmzDMbr1QG03OxayQ&oe=620128D6);
+    background-position: center;
+    background-size: cover;">
+            <div class="overlay"></div>
+
+
+            <div class="container container-introduce">
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="col">
+                        <div class="card text-white bg-dark h-100">
+                            <img src="images/introduce/fruit.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold text-danger">FRESH FRUIT</h5>
+                                <p class="card-text">● Với mục tiêu đáp ứng tối đa nhu cầu của các khách hàng, trái cây tươi được cung cấp tại LUDU Store rất đa dạng về chủng loại, không chỉ có những mặt hàng quen thuộc, có nguồn gốc từ Việt Nam mà còn đa dạng những loại mới lạ, được nhập khẩu từ Mỹ, Hàn Quốc, Canada, Úc, Nam Phi... <br>
+                                ● Tất cả trái cây tươi được bán tại LUDU Store bạn sẽ thấy từng loại trái cây nào cũng có nguồn gốc, xuất xứ rõ ràng.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card text-white bg-dark h-100">
+                            <img src="images/introduce/flower.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold text-danger">FRESH FLOWER</h5>
+                                <p class="card-text">● Từ lâu “HOA” không
+                                    thể thiếu trong đời sống của
+                                    chúng ta ngày nay nay.<br>
+                                    ● LUDU Store chuyên cung cấp các loại hoa tươi với giá cả hợp lý nhất thị trường. Tại LUDU Store, các loại hoa tươi sẽ được cắm nhiều kiểu, đa dạng chủng loại, mẫu mã. Bao gồm: hoa chúc mừng, hoa sinh nhật, hoa ngày lễ, hoa tang lễ,
+                                    <br>
+                                    ● Bên cạnh việc cố gắng để đem đến cho khách hàng những mẫu hoa tươi, chúng tôi còn luôn nỗ lực cố gắng để có thể cập nhật các mẫu cắm mới đang là xu hướng của thị trường.
+
+                                 </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card text-white bg-dark h-100">
+                            <img src="images/introduce/baobi.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold text-danger">PACKAGE FLOWER</h5>
+                                <p class="card-text">● Không chỉ đơn giản là "HOA" với sologan "Nâng niu Từng Cánh Hoa". <br>
+                                    ● Sản phẩm bao bì của LUDU Store, với từng loại
+                                    thiết kế riêng biệt, sáng tạo, độc đáo. Luôn luôn đem đến sản phẩm chất lượng cao đến cho khách hàng, chất lượng sản phẩm tạo nên thương hiệu.
+                                    <br>
+                                    ● Nếu bạn là cửa hàng hoa tươi nhỏ muốn tạo một thương
+                                    hiệu riêng cho mình hãy để  LUDU Store giúp bạn làm điều
+                                    đó.
+                                    LUDU Store chuyên cung cấp các loại bao bì về ngành hoa.
+                             </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <p class="card-text"></p>
-            </div>
-        </div>
-        <div class="card bg-dark">
-            <img src="https://i.pinimg.com/564x/bd/40/17/bd4017dff143b63b363736ec66c82fcc.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <div class="d-grid gap-2 col-6 mx-auto">
-                    <a class="btn btn-danger text-capitalize" href="product.php"
-                     type="button">PRODUCT</a>
-                </div>
-                <p class="card-text"></p>
-            </div>
-        </div>
-        <div class="card bg-dark">
-            <img src="https://i.pinimg.com/564x/18/6c/b5/186cb5d86c94cb42edb584c312d68538.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <div class="d-grid gap-2 col-6 mx-auto">
-                    <a class="btn btn-danger text-capitalize" href="introduce.php"
-                     type="button">INTRODUCE</a>
-                </div>
-                <p class="card-text"></p>
             </div>
         </div>
     </div>
-    <!--Cards End-->
 
     <!--Footer Start-->
     <footer class="bg-dark text-center text-white">
@@ -247,11 +297,9 @@ if (isset($_SESSION['user_mail']) == true) {
     </footer>
     <!--Footer End-->
 
-</div>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
 </body>
 </html>
+</main>

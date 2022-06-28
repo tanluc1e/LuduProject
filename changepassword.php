@@ -6,7 +6,7 @@ if (isset($_SESSION['user_mail']) == false) {
     exit();
 } 
 
-//GET CURRENT VALUES (Address, Phone)
+//GET CURRENT VALUES FROM DATABASE (User_name, Address, Phone)
 $conn_gcv = mysqli_connect("localhost", "tanluc1", "tanluc1", "ludu");
 $gcv_mail = $_SESSION['user_mail'];
 $gcv_sql = "SELECT * FROM Users WHERE user_mail='$gcv_mail'";
@@ -14,6 +14,7 @@ $gcv_query = mysqli_query($conn_gcv, $gcv_sql);
 if ($row = mysqli_fetch_assoc($gcv_query)) { 
     $current_address = $row['address'];
     $current_phone = $row['phone'];
+	$current_username = $row['user_name'];
 }
 
 //GET VALUES FROM SESSION
@@ -58,7 +59,7 @@ if(isset($_POST['btnchangepassword']) == true){
       }
 
 	//CHECK NEW PASSWORD LENGHT AND SAME
-    if(strlen($newpassword_1)<6) {echo "<center>(Mật khẩu quá ngắn!)</center>"; $checksuccess = false; $error = "Error!";} 
+    if(strlen($newpassword_1)>6) {echo "<center>(Mật khẩu quá ngắn!)</center>"; $checksuccess = false; $error = "Error!";} 
     if($newpassword_1!=$newpassword_2) {echo "<center>(Mật khẩu mới không giống nhau!)</center>"; $checksuccess = false; $error = "Error!";}
     
 
@@ -84,18 +85,20 @@ if(isset($_POST['btnsaveinformation']) == true){
 	//POST VALUES TO SESSION
 	$address = $_POST['address'];
 	$phone = $_POST['phone'];
+	$update_user_name = $_POST['user_name'];
 
 	//GET VALUES FROM SESSION
 	$get_address = $_SESSION['address'];
 	$get_phone = $_SESSION['phone'];
+	$user_name = $_SESSION['user_name'];
 
 	//SELECT DATABASE AND PREPARE A SELECT STATEMENT
 	$conn = new mysqli('localhost', 'tanluc1', 'tanluc1', 'ludu');
-	$sql = "UPDATE users SET address = ? , phone = ? WHERE user_mail = ?";
+	$sql = "UPDATE users SET user_name = ?, address = ? , phone = ? WHERE user_mail = ?";
 	$stmt = $conn->prepare($sql);
 
 	//ADD POST VALUES FROM SESSION TO DATABASE
-	$stmt->execute([$address, $phone, $get_user_mail]);
+	$stmt->execute([$update_user_name, $address, $phone, $get_user_mail]);
 	if($checksuccess == true) {
 	  echo "<center>(Cập nhật thông tin thành công)</center>";
 	  header("Refresh:0; url=changepassword.php");
@@ -103,10 +106,18 @@ if(isset($_POST['btnsaveinformation']) == true){
 }
 ?>
 
-
+<!DOCTYPE html>
+<html>
+<head>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<meta charset="utf-8">
+  <title>LUDU - Cập nhật thông tin</title>
+  <link rel="icon" type="image/jpg" href="images/logo1.png"/>
+  <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
 
-  
   <div class="wrapper">
 	
 	<div class="password-container">
@@ -140,7 +151,7 @@ if(isset($_POST['btnsaveinformation']) == true){
 		<span class="line"></span>
 		<form method="POST" action="">
 			<div class="form-group">
-				<input name="user_name" type="text" class="form-control" required value="<?php echo $_SESSION['user_name'] ?>">
+				<input name="user_name" type="text" class="form-control" required value="<?php echo $current_username ?>">
 				<label>User name</label>
 			</div>
 			<div class="form-group">

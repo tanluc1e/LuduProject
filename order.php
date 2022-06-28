@@ -3,6 +3,23 @@ session_start();
 
 include("mysql/baglan.php");
 
+//Check nếu chưa có user_mail (chưa đăng nhập) sẽ trả về trang login.php
+if(session_id() == '') session_start();
+if (isset($_SESSION['user_mail']) == false) {
+    header("location: login.php");
+    exit();
+} 
+
+//GET CURRENT VALUES FROM DATABASE (User_name, Address, Phone)
+$conn_gcv = mysqli_connect("localhost", "tanluc1", "tanluc1", "ludu");
+$gcv_mail = $_SESSION['user_mail'];
+$gcv_sql = "SELECT * FROM Users WHERE user_mail='$gcv_mail'";
+$gcv_query = mysqli_query($conn_gcv, $gcv_sql);
+if ($row = mysqli_fetch_assoc($gcv_query)) { 
+    $current_address = $row['address'];
+    $current_phone = $row['phone'];
+	$current_username = $row['user_name'];
+}
 
 ?>
 
@@ -14,7 +31,7 @@ include("mysql/baglan.php");
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="icon" type="image/jpg" href="images/logo.png"/>
+    <link rel="icon" type="image/jpg" href="images/logo1.png"/>
 
     <style>
 
@@ -57,11 +74,11 @@ include("mysql/baglan.php");
 
 
         .title {
-            background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #ffc107), color-stop(100, #868686));
-            background: -moz-linear-gradient(top left, #ffc107 0%, #868686 100%);
-            background: -ms-linear-gradient(top left, #ffc107 0%, #868686 100%);
-            background: -o-linear-gradient(top left, #ffc107 0%, #868686 100%);
-            background: linear-gradient(to bottom right, #ffc107 0%, #868686 100%);
+            background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #FE0944), color-stop(100, #E96196));
+            background: -moz-linear-gradient(top left, #FE0944 0%, #E96196 100%);
+            background: -ms-linear-gradient(top left, #FE0944 0%, #E96196 100%);
+            background: -o-linear-gradient(top left, #FE0944 0%, #E96196 100%);
+            background: linear-gradient(to bottom right, #FE0944 0%, #E96196 100%);
             border-radius: 5px 5px 0 0;
             padding: 20px;
             color: #000000;
@@ -94,7 +111,7 @@ include("mysql/baglan.php");
             padding: 5px 10px;
             margin-bottom: 10px;
             border: 1px solid #dadada;
-            color: #888;
+            color: black;
         }
 
         select {
@@ -156,7 +173,7 @@ include("mysql/baglan.php");
 
         button:hover {
             cursor: pointer;
-            background: #ffc107;
+            background: #DA2C43;
         }
 
         *,
@@ -172,7 +189,7 @@ include("mysql/baglan.php");
         }
 
         body {
-            background: linear-gradient(50deg, #868686, #ffc107);
+            background: linear-gradient(500deg, #F8D1CD, #F0A8AB);
         }
 .title{
     text-align: center;
@@ -203,7 +220,7 @@ include("mysql/baglan.php");
         .form fieldset.fieldset-ccv {
             clear: none;
             float: right;
-            width: 86px;
+            width: 130px;
         }
 
         .form fieldset label {
@@ -323,15 +340,18 @@ include("mysql/baglan.php");
             border-radius: 15px;
             padding: 5px 30px 15px;
         }
+        .title-text-white{
+            color: white;
+        }
     </style>
     <!--Black Background-->
-    <title>☕ Shikoba</title>
+    <title>LUDU - Order Screen</title>
 </head>
 
 <div class="container" style="height: 80%">
 
-    <div class="title">
-        <h2>Sipariş Ekranı</h2>
+    <div class="title title-text-white">
+        <h2>ORDER</h2>
     </div>
     <div class="d-flex">
         <?php
@@ -349,7 +369,7 @@ include("mysql/baglan.php");
 
             $result = $conn->query($sql);
             echo "<script>
-            alert('Siparişiniz Alınmıştır')
+            alert('Your order has been received')
             window.location.href='index.php'
         </script>";
         }
@@ -358,25 +378,25 @@ include("mysql/baglan.php");
         <form method="POST" class="form">
 
             <label>
-                <span class="fname">Ad Soyad <span class="required">*</span></span>
-                <input type="text" name="fname" placeholder="Ad Soyad Giriniz" required>
+                <span class="fname">Name <span class="required">*</span></span>
+                <input type="text" name="fname" placeholder="Enter your name" value="<?php echo $current_username ?>" required>
             </label>
             <label>
-                <span class="fname">Şehir <span class="required">*</span></span>
-                <input type="text" name="fcity" placeholder="Şehir Giriniz" required>
+                <span class="fname">City <span class="required">*</span></span>
+                <input type="text" name="fcity" placeholder="Enter your city" required>
             </label>
             <label>
-                <span>Açık Adres <span class="required">*</span></span>
-                <input type="text" name="houseadd" placeholder="Adres Giriniz" required>
+                <span>Address <span class="required">*</span></span>
+                <input type="text" name="houseadd" placeholder="Enter your address" value="<?php echo $current_address ?>" required>
             </label>
             <label>
-                <span>Telefon Numarası <span class="required">*</span></span>
-                <input type="tel" name="tel" placeholder="Telefon Numarası Giriniz" required>
+                <span>Phone Number <span class="required">*</span></span>
+                <input type="tel" name="tel" placeholder="Enter your phone number" value="<?php echo $current_phone ?>" required>
             </label>
             <table>
 
                 <tr>
-                    <th colspan="2">Sepet</th>
+                    <th colspan="2">Your cart</th>
                 </tr>
                 <?php
                 $id = $_SESSION['id'];
@@ -385,11 +405,13 @@ include("mysql/baglan.php");
 
                 $sql1 = "SELECT SUM(Quantity*price) AS total FROM cart where user_id=$id";
                 $result1 = $conn->query($sql1);
+                
                 while ($row = $result->fetch_assoc()){
+                $total_each_product = $row["quantity"] * $row["price"];
                 ?>
                 <tr>
-                    <td><?php  $pname=$row["pname"]; echo $row["pname"]; ?> x <?php $quantity=$row["quantity"]; echo $row["quantity"]; ?>)</td>
-                    <td><?php $price=$row["price"]; echo $row["quantity"] * $row["price"]; ?> TL</td>
+                    <td>(<?php $pname=$row["pname"]; echo $row["pname"]; ?> x <?php $quantity=$row["quantity"]; echo $row["quantity"]; ?>)</td>
+                    <td><?php $price=$row["price"]; echo number_format($total_each_product, 3); ?> VND</td>
 
                     <?php
                     }
@@ -399,13 +421,13 @@ include("mysql/baglan.php");
                 <?php while ($row1 = $result1->fetch_assoc()){ ?>
 
                 <tr>
-                    <td style="color: red ; font-weight: bold">Toplam</td>
-                    <td style="color: red ; font-weight: bold"><?php $total=$row1["total"]; echo $row1["total"]; } ?> TL
+                    <td style="color: red ; font-weight: bold">Total</td>
+                    <td style="color: red ; font-weight: bold"><?php $total=$row1["total"]; echo number_format($row1['total'], 3); }?> VND
                     </td>
                 </tr>
                 <tr>
-                    <td style="color: #000000 ; font-weight: bold ">Gönderim</td>
-                    <td style="color: #000000 ; font-weight: bold ">Ücretsiz Gönderim</td>
+                    <td style="color: #000000 ; font-weight: bold ">Transfer</td>
+                    <td style="color: #000000 ; font-weight: bold ">Free Shipping</td>
                 </tr>
             </table>
             <br>
@@ -413,18 +435,18 @@ include("mysql/baglan.php");
             <div class="checkout" style="">
 
                 <fieldset>
-                    <label for="card-number">Kart Numarası</label>
+                    <label for="card-number">Card Number</label>
                     <input type="num" id="card-number" class="input-cart-number" maxlength="4" required>
                     <input type="num" id="card-number-1" class="input-cart-number" maxlength="4" required>
                     <input type="num" id="card-number-2" class="input-cart-number" maxlength="4" required>
                     <input type="num" id="card-number-3" class="input-cart-number" maxlength="4" required>
                 </fieldset>
                 <fieldset>
-                    <label for="card-holder">Kart Sahibi</label>
+                    <label for="card-holder">Card Owner</label>
                     <input type="text" id="card-holder" required>
                 </fieldset>
                 <fieldset class="fieldset-expiration">
-                    <label for="card-expiration-month">Son Kullanma Tarihi</label>
+                    <label for="card-expiration-month">Expiration Date</label>
                     <div class="select">
                         <select id="card-expiration-month">
                             <option></option>
@@ -464,7 +486,7 @@ include("mysql/baglan.php");
                 </fieldset>
 
             </div>
-            <button class="btn" name="submit"><i class="fa fa-lock"></i> Siparişi Tamamla</button>
+            <button class="btn" name="submit"><i class="fa fa-lock"></i>Complete Order</button>
         </form>
     </div>
 

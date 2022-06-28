@@ -9,4 +9,4 @@
 //
 //    die("failed to connect!");
 //}
-$conn = new mysqli('localhost', 'tanluc1', 'tanluc1', 'shikoba');
+$conn = new mysqli('localhost', 'tanluc1', 'tanluc1', 'ludu');
