@@ -1,3 +1,6 @@
+<p align="center">
+  <img width="200" src="https://i.ibb.co/4J2yjjp/logo1.png" alt="Ludu store logo">
+</p>
 <h1 align="center"><b>LUDU STORE</h1>
 
 <h2 align="center">FRUIT, FLOWER AND PACKAGING</h1>
