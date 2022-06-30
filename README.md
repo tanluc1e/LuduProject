@@ -8,13 +8,23 @@
 - Trần Thế Duy (Davis)
 - Bùi Nguyễn Tấn Lực (Luke)
 
-
 <br />
 
 ### <b>The Stack
 - Programming Language: Html, Php
 - Database: MySQL
 - Styling: Bootstrap & CSS
+
+<br />
+
+### <b>How to use:
+<p>
+<b>First, Create new database</b> <br>
+- Open file Ludu/ludu.sql copy and paste on your localhost/phpadmin <br>
+<b>Connect database (Mysql)</b> <br>
+1. Open file Ludu/mysql/baglan.php <br>
+2. Change your user and password <br>
+</p>
 
 <br />
 
