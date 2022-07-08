@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-include("mysql/baglan.php");
+include("mysql/connect.php");
 
 //Kiểm tra nếu đã đăng nhập (get user_mail == true) sẽ lấy giá trị từ database
 if(session_id() == '') session_start();

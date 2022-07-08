@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-include("mysql/baglan.php");
+include("mysql/connect.php");
 
 //Kiểm tra nếu đã đăng nhập (get user_mail == true) sẽ lấy giá trị từ database
 if(session_id() == '') session_start();
@@ -35,10 +35,12 @@ if (isset($_SESSION['user_mail']) == true) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
-    <!--Black Background-->
+    
+            
     <link rel="stylesheet" href="./css-file/design2.css">
     <link rel="stylesheet" href="./script.js">
     <link rel="stylesheet" href="./css-file/style.css">
+    <!--Black Background-->
     <style>
 
         /*------------------------------------------------
@@ -185,25 +187,20 @@ if (isset($_SESSION['user_mail']) == true) {
                             <div class="dropdown">
                            <button class="btn-log-in btn btn-danger text-capitalize" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><?php echo $current_username; ?></button>
                            <ul class="dropdown-menu">
-                           <li><a class="dropdown-item" href="#">Profile</a></li>
+                           <li><a class="dropdown-item" href="./profile.php">Profile</a></li>
                            <li><a class="dropdown-item" href="./changepassword.php">Change Password</a></li>
                        </ul>
-                   
 
+                       
                         <a href="logout.php" type="button" class="btn btn-outline-light me-2">Log out</a>
                         <?php
                         } else { ?>
                             <a href="login.php" type="button" class="btn btn-outline-light me-2">Sign in/out</a>
                             <?php
                         }
-                        ?>
-                          
+                        ?> 
                     </div>
-
-            
             </div>
-            
-            
         </div>
     </div>
 </header>

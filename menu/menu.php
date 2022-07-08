@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-include("../mysql/baglan.php");
+include("../mysql/connect.php");
 
 //Kiểm tra nếu đã đăng nhập (get user_mail == true) sẽ lấy giá trị từ database
 if(session_id() == '') session_start();
@@ -68,15 +68,15 @@ if (isset($_SESSION['user_mail']) == true) {
                             <div class="dropdown">
                            <button class="btn-log-in btn btn-danger text-capitalize" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><?php echo $current_username; ?></button>
                            <ul class="dropdown-menu">
-                           <li><a class="dropdown-item" href="#">Profile</a></li>
+                           <li><a class="dropdown-item" href="../profile.php">Profile</a></li>
                            <li><a class="dropdown-item" href="./changepassword.php">Change Password</a></li>
                        </ul>
                    
 
-                        <a href="logout.php" type="button" class="btn btn-outline-light me-2">Log out</a>
+                        <a href="../logout.php" type="button" class="btn btn-outline-light me-2">Log out</a>
                         <?php
                         } else { ?>
-                            <a href="login.php" type="button" class="btn btn-outline-light me-2">Sign in/out</a>
+                            <a href="../login.php" type="button" class="btn btn-outline-light me-2">Sign in/out</a>
                             <?php
                         }
                         ?>   
@@ -759,3 +759,8 @@ if (isset($_SESSION['user_mail']) == true) {
     <!--Footer End-->
 
     </main>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>

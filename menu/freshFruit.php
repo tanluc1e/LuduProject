@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-include("../mysql/baglan.php");
+include("../mysql/connect.php");
 
 ?>
 <!doctype html>

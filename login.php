@@ -9,7 +9,7 @@ if (isset($_SESSION['user_mail']) == true) {
     exit();
 } 
 
-include("mysql/baglan.php");
+include("mysql/connect.php");
         /* SIGN IN */
 if (isset($_POST["login"])) {
     $email = $_POST["user_mail"];

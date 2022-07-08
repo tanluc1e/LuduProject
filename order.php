@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include("mysql/baglan.php");
+include("mysql/connect.php");
 
 //Check nếu chưa có user_mail (chưa đăng nhập) sẽ trả về trang login.php
 if(session_id() == '') session_start();

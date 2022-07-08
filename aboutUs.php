@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-include("mysql/baglan.php");
+include("mysql/connect.php");
 
 //Kiểm tra nếu đã đăng nhập (get user_mail == true) sẽ lấy giá trị từ database
 if(session_id() == '') session_start();
@@ -149,7 +149,7 @@ if (isset($_SESSION['user_mail']) == true) {
                             <div class="dropdown">
                            <button class="btn-log-in btn btn-danger text-capitalize" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><?php echo $current_username; ?></button>
                            <ul class="dropdown-menu">
-                           <li><a class="dropdown-item" href="#">Profile</a></li>
+                           <li><a class="dropdown-item" href="./profile.php">Profile</a></li>
                            <li><a class="dropdown-item" href="./changepassword.php">Change Password</a></li>
                        </ul>
                    
