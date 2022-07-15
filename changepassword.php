@@ -1,4 +1,5 @@
 <?php 
+include("mysql/connect.php");
 //Check nếu chưa có user_mail (chưa đăng nhập) sẽ trả về trang login.php
 if(session_id() == '') session_start();
 if (isset($_SESSION['user_mail']) == false) {
@@ -7,10 +8,9 @@ if (isset($_SESSION['user_mail']) == false) {
 } 
 
 //GET CURRENT VALUES FROM DATABASE (User_name, Address, Phone)
-$conn_gcv = mysqli_connect("localhost", "tanluc1", "tanluc1", "ludu");
 $gcv_mail = $_SESSION['user_mail'];
 $gcv_sql = "SELECT * FROM Users WHERE user_mail='$gcv_mail'";
-$gcv_query = mysqli_query($conn_gcv, $gcv_sql);
+$gcv_query = mysqli_query($conn, $gcv_sql);
 if ($row = mysqli_fetch_assoc($gcv_query)) { 
     $current_address = $row['address'];
     $current_phone = $row['phone'];
@@ -35,10 +35,8 @@ if(isset($_POST['btnchangepassword']) == true){
     $newpassword_2 = md5($_POST['pass_new2']);
 
 	//SELECT DATABASE
-    $conn = new mysqli('localhost', 'tanluc1', 'tanluc1', 'ludu');
     $sql = "SELECT * FROM users WHERE user_name = ? AND password = ?";
     $sql2 = "SELECT * FROM users WHERE (user_mail='$get_user_mail')";
-    $db = mysqli_connect("localhost", "tanluc1", "tanluc1", "ludu");
 
 	//CHECK EACH ROW FROM DATABASE TO GET VALUES
     $res = mysqli_query($db, $sql2);
@@ -59,7 +57,7 @@ if(isset($_POST['btnchangepassword']) == true){
       }
 
 	//CHECK NEW PASSWORD LENGHT AND SAME
-    if(strlen($newpassword_1)>6) {echo "<center>(Mật khẩu quá ngắn!)</center>"; $checksuccess = false; $error = "Error!";} 
+    if(strlen($_POST['pass_new1'])<6) {echo "<center>(Mật khẩu mới quá ngắn!)</center>"; $checksuccess = false; $error = "Error!";} 
     if($newpassword_1!=$newpassword_2) {echo "<center>(Mật khẩu mới không giống nhau!)</center>"; $checksuccess = false; $error = "Error!";}
     
 
@@ -93,7 +91,6 @@ if(isset($_POST['btnsaveinformation']) == true){
 	$user_name = $_SESSION['user_name'];
 
 	//SELECT DATABASE AND PREPARE A SELECT STATEMENT
-	$conn = new mysqli('localhost', 'tanluc1', 'tanluc1', 'ludu');
 	$sql = "UPDATE users SET user_name = ?, address = ? , phone = ? WHERE user_mail = ?";
 	$stmt = $conn->prepare($sql);
 
