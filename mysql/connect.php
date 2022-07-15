@@ -10,3 +10,4 @@
 //    die("failed to connect!");
 //}
 $conn = new mysqli('localhost', 'tanluc1', 'tanluc1', 'ludu');
+$db = mysqli_connect("localhost", "tanluc1", "tanluc1", "ludu");

@@ -99,6 +99,10 @@ INSERT INTO `users` (`id`, `user_mail`, `user_name`, `password`, `date`, `addres
 (1, 'tanluc1@gmail.com', 'tanluc1', '123456', '2022-6-20 17:00:44', 'Nha Trang', 0362015200);
 INSERT INTO `users` (`id`, `user_mail`, `user_name`, `password`, `date`, `address`, `phone`) VALUES
 (2, 'tanluc2@gmail.com', 'tanluc2', '12345678', '2022-6-20 17:00:44', 'Sai Gon', 0362015211);
+INSERT INTO `users` (`id`, `user_mail`, `user_name`, `password`, `date`, `address`, `phone`) VALUES
+(3, 'theduy1@gmail.com', 'theduy1', '123456', '2022-6-20 17:20:44', 'Hue', 0362015288);
+INSERT INTO `users` (`id`, `user_mail`, `user_name`, `password`, `date`, `address`, `phone`) VALUES
+(4, 'theduy2@gmail.com', 'theduy2', '1234567', '2022-6-20 17:10:44', 'Ha Noi', 0362015299);
 
 UPDATE users
 SET password = MD5(password);

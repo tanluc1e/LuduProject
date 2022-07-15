@@ -1,5 +1,6 @@
 <?php
 session_start();
+include("mysql/connect.php");
 error_reporting(0);
 
 //Kiểm tra nếu đã đăng nhập (get user_mail == true) sẽ không cho truy cập trang login.php nữa, trả về index.php
@@ -9,7 +10,6 @@ if (isset($_SESSION['user_mail']) == true) {
     exit();
 } 
 
-include("mysql/connect.php");
         /* SIGN IN */
 if (isset($_POST["login"])) {
     $email = $_POST["user_mail"];
@@ -49,7 +49,6 @@ if (isset($_POST['register_btn'])) {
     $password = md5($_POST['password']);
     $sql = "SELECT * FROM users WHERE (user_mail='$user_mail')";
     $query = "insert into users (user_mail,user_name,password) values('$user_mail','$user_name','$password')";
-    $db = mysqli_connect("localhost", "tanluc1", "tanluc1", "ludu");
     $res = mysqli_query($db, $sql);
     if (mysqli_num_rows($res) > 0) {
         $row = mysqli_fetch_assoc($res);

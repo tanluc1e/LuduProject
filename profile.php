@@ -1,4 +1,5 @@
 <?php 
+include("mysql/connect.php");
 //Check nếu chưa có user_mail (chưa đăng nhập) sẽ trả về trang login.php
 if(session_id() == '') session_start();
 if (isset($_SESSION['user_mail']) == false) {
@@ -7,10 +8,9 @@ if (isset($_SESSION['user_mail']) == false) {
 } 
 
 //GET CURRENT VALUES FROM DATABASE (User_name, Address, Phone)
-$conn_gcv = mysqli_connect("localhost", "tanluc1", "tanluc1", "ludu");
 $gcv_mail = $_SESSION['user_mail'];
 $gcv_sql = "SELECT * FROM Users WHERE user_mail='$gcv_mail'";
-$gcv_query = mysqli_query($conn_gcv, $gcv_sql);
+$gcv_query = mysqli_query($conn, $gcv_sql);
 if ($row = mysqli_fetch_assoc($gcv_query)) { 
     $current_address = $row['address'];
     $current_phone = $row['phone'];

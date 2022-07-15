@@ -7,10 +7,9 @@ include("mysql/connect.php");
 if(session_id() == '') session_start();
 if (isset($_SESSION['user_mail']) == true) {
     //GET CURRENT VALUES FROM DATABASE (User_name)
-    $conn_gcv = mysqli_connect("localhost", "tanluc1", "tanluc1", "ludu");
     $gcv_mail = $_SESSION['user_mail'];
     $gcv_sql = "SELECT * FROM Users WHERE user_mail='$gcv_mail'";
-    $gcv_query = mysqli_query($conn_gcv, $gcv_sql);
+    $gcv_query = mysqli_query($conn, $gcv_sql);
     if ($row = mysqli_fetch_assoc($gcv_query)) { 
 	$current_username = $row['user_name'];
     }

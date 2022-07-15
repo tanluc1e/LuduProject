@@ -24,10 +24,9 @@ if (isset($_POST["add"])) {
 if(session_id() == '') session_start();
 if (isset($_SESSION['user_mail']) == true) {
     //GET CURRENT VALUES FROM DATABASE (User_name)
-    $conn_gcv = mysqli_connect("localhost", "tanluc1", "tanluc1", "ludu");
     $gcv_mail = $_SESSION['user_mail'];
     $gcv_sql = "SELECT * FROM Users WHERE user_mail='$gcv_mail'";
-    $gcv_query = mysqli_query($conn_gcv, $gcv_sql);
+    $gcv_query = mysqli_query($conn, $gcv_sql);
     if ($row = mysqli_fetch_assoc($gcv_query)) { 
 	$current_username = $row['user_name'];
     }
@@ -161,11 +160,11 @@ if (isset($_SESSION['user_mail']) == true) {
         body {
             font-family: -apple-system, ".SFNSText-Regular", 'Helvetica Neue', sans-serif;
             line-height: 1.5;
-            color: $ grey;
+            color: grey;
             align-items: center;
             justify-content: center;
-            background-color: $ background;
-        / / -webkit-filter: hue-rotate(- 90 deg);
+            background-color:  background;
+            --webkit-filter: hue-rotate(- 90 deg);
             position: relative;
         }
 
@@ -182,16 +181,16 @@ if (isset($_SESSION['user_mail']) == true) {
         }
 
 
-        &
+        
         :last-child {
             margin-bottom: 0;
         }
 
-        }
+        
 
         .btn {
             display: inline-block;
-            color: $ white;
+            color:  white;
             text-align: center;
             padding: 1.75em 3.5em;
             white-space: nowrap;
@@ -202,8 +201,8 @@ if (isset($_SESSION['user_mail']) == true) {
         .product {
             position: relative;
             border-radius: 12px;
-            background-color: $ white;
-            transition: box-shadow $ time $ easing;
+            background-color:  white;
+            transition: box-shadow  time  easing;
             border: 1px solid #939090;
             margin: 50px 25px 10px -1px;
             padding: 10px;
@@ -249,10 +248,10 @@ if (isset($_SESSION['user_mail']) == true) {
             bottom: -30px;
             right: 65px;
             background-color: #d9534f;
-            transition: background-color $ time $ easing, box-shadow $ time $ easing;
+            transition: background-color  time  easing, box-shadow  time  easing;
 
 
-            & /*:hover {*/ /*    @include shadow-dark;*/ /*    background-color: mix($ accent, $ black, 95%);*/ /*}*/
+             /*:hover {*/ /*    @include shadow-dark;*/ /*    background-color: mix($ accent, $ black, 95%);*/ /*}*/
 
         }
 
