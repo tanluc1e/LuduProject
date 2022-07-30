@@ -1,13 +1,20 @@
 <?php
 session_start();
+include("mysql/connect.php");
 error_reporting(0);
 
-include("mysql/baglan.php");
+//Kiểm tra nếu đã đăng nhập (get user_mail == true) sẽ không cho truy cập trang login.php nữa, trả về index.php
+if(session_id() == '') session_start();
+if (isset($_SESSION['user_mail']) == true) {
+    header("location: index.php");
+    exit();
+} 
+
         /* SIGN IN */
 if (isset($_POST["login"])) {
     $email = $_POST["user_mail"];
-    $password = $_POST["password"];
-    $sql = "SELECT * FROM users WHERE user_mail='$email'AND password='$password'";
+    $password = md5($_POST['password']);
+    $sql = "SELECT * FROM users WHERE user_mail='$email'AND password= '$password'";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
 
@@ -15,11 +22,13 @@ if (isset($_POST["login"])) {
     $result1 = $conn->query($sql1);
     $row1 = $result1->fetch_assoc();
 
+    // Lấy giá trị từ form database
     $_SESSION['user_mail'] = $row['user_mail'];
     $_SESSION['user_name'] = $row['user_name'];
     $_SESSION['password'] = $row['password'];
-
     $_SESSION['id'] = $row['id'];
+    $_SESSION['phone'] = $row['phone'];
+    $_SESSION['address'] = $row['address'];
 
     if ($email = $row1["user_name"] and $password = $row1["password"]) {
         header('location: panel/index.php');}
@@ -28,40 +37,37 @@ if (isset($_POST["login"])) {
     }
         else{
             echo "<script>
-            alert('Error! Please check your email and password.')
+            alert('Lỗi! Vui lòng kiểm tra lại email và mật khẩu!')
             window.location.href='login.php'
         </script>";
         }
 }
         /* SIGN UP */
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
+if (isset($_POST['register_btn'])) {
     $user_name = $_POST['user_name'];
     $user_mail = $_POST['user_mail'];
-    $password = $_POST['password'];
+    $password = md5($_POST['password']);
+    $sql = "SELECT * FROM users WHERE (user_mail='$user_mail')";
+    $query = "insert into users (user_mail,user_name,password) values('$user_mail','$user_name','$password')";
+    $res = mysqli_query($db, $sql);
+    if (mysqli_num_rows($res) > 0) {
+        $row = mysqli_fetch_assoc($res);
+        if ($user_mail == $row['user_mail']) {  
+            $_SESSION['message'] = "Email have already";
+            echo "<script>
+            alert('Email đã được sử dụng')
+            window.location.href='login.php'
+        </script>";
+        }
+    } elseif (!empty($user_name) && !empty($password) && !empty($user_mail)) {
+        
 
-
-    if (!empty($user_name) && !empty($password) && !empty($user_mail)) {
-        $query = "insert into users (user_mail,user_name,password) values('$user_mail','$user_name','$password')";
-
-        mysqli_query($conn, $query);
+        mysqli_query($db, $query);
 
         header("location: login.php");
         die;
     }
 
-    //CHECK EMPTY
-    if ($password == ""){
-      echo "<script>
-              alert('Please type your password')
-              window.location.href='login.php'
-          </script>";
-    }
-    if ($user_name == ""){
-      echo "<script>
-      alert('Please type your user name')
-      window.location.href='login.php'
-      </script>";
-    }
 }
 ?>
 
@@ -71,7 +77,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Ludu - Sign in/out</title>
+  <title>LUDU - Đăng ký/Đăng nhập</title>
+  <link rel="icon" type="image/jpg" href="images/logo1.png"/>
   <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -117,18 +124,18 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
   <div class="form-container sign-up-container">
     <form method="POST">
       <h1>Create Account</h1>
-      <input type="text" id="user_name" name="user_name" placeholder="Type your name"/>
-      <input type="email" id="user_mail" name="user_mail" placeholder="Type your Email" />
-      <input type="password" id="password" name="password" placeholder="Type your password" />
-      <button type="submit">Sign Up</button>
+      <input type="text" id="user_name" name="user_name" placeholder="Type your name..." required oninvalid="this.setCustomValidity('Vui lòng nhập tên tài khoản')" oninput="setCustomValidity('')"/>
+      <input type="email" id="user_mail" name="user_mail" placeholder="Type your Email..." required oninvalid="this.setCustomValidity('Vui lòng nhập email')" oninput="setCustomValidity('')"/>
+      <input type="password" id="password" name="password" placeholder="Type your password..." required oninvalid="this.setCustomValidity('Vui lòng nhập mật khẩu')" oninput="setCustomValidity('')"/>
+      <button type="submit" name="register_btn">Sign Up</button>
     </form>
   </div>
   <!-------------------------------------------------------------- SIGN IN ------------------------------------------------------>
   <div class="form-container sign-in-container">
     <form method="POST" action="login.php">
       <h1>Sign in</h1>
-      <input type="text" id="email" name="user_mail" placeholder="Type your Email"/>
-      <input type="password" id="password" name="password" placeholder="Type your password"/>
+      <input type="text" id="email" name="user_mail" placeholder="Type your Email" required oninvalid="this.setCustomValidity('Vui lòng nhập email!')" oninput="setCustomValidity('')"/>
+      <input type="password" id="password" name="password" placeholder="Type your password" required oninvalid="this.setCustomValidity('Vui lòng nhập mật khẩu')" oninput="setCustomValidity('')"/>
       <a href="#">Forgot your password?</a>
       <button name="login">Sign in</button>
     </form>

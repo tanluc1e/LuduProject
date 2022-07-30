@@ -1,7 +1,19 @@
 <?php
 
 session_start();
-include("mysql/baglan.php");
+include("mysql/connect.php");
+
+//Kiểm tra nếu đã đăng nhập (get user_mail == true) sẽ lấy giá trị từ database
+if(session_id() == '') session_start();
+if (isset($_SESSION['user_mail']) == true) {
+    //GET CURRENT VALUES FROM DATABASE (User_name)
+    $gcv_mail = $_SESSION['user_mail'];
+    $gcv_sql = "SELECT * FROM Users WHERE user_mail='$gcv_mail'";
+    $gcv_query = mysqli_query($conn, $gcv_sql);
+    if ($row = mysqli_fetch_assoc($gcv_query)) { 
+	$current_username = $row['user_name'];
+    }
+} 
 
 ?>
 
@@ -12,7 +24,7 @@ include("mysql/baglan.php");
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/jpg" href="images/logo.png"/>
+    <link rel="icon" type="image/jpg" href="images/logo1.png"/>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
           integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -25,7 +37,7 @@ include("mysql/baglan.php");
             crossorigin="anonymous"></script>
 
 
-    <link rel="stylesheet" href="./css-file/design.css">
+    <link rel="stylesheet" href="./css-file/design2.css">
     <link rel="stylesheet" href="./script.js">
     <link rel="stylesheet" href="./css-file/style.css">
     <!--Black Background-->
@@ -38,62 +50,96 @@ include("mysql/baglan.php");
             background-size: cover;
         }
 
+        .bg-dark{
+           background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary:hover{
+            
+            color: #d9534f;
+        }
+
         .container-fluid {
-            border-top: 4px solid #ffc107;
+            border-top: 4px solid #d9534f;
+            padding-left: 0px;
+            padding-right: 0px;
         }
 
         .dropdown .btn-primary {
-            background-color: #ffc107;
+            background-color: white;
         }
 
         .dropdown-menu {
-            background-color: #ffc107;
+            background-color: white;
+        }
+        .text-white{
+            font-size: 1.6rem;
+        }
+        .button-outline{
+            display: flex;
+            margin-bottom: 14px;
+        }
+        .btn-login-logout{
+            display: flex;
+            align-items: center;
+        }
+        .cart{
+            display: flex;
+            align-items: center;
+            margin-left: 1px;
+        }
+
+        .btn-log-in{
+            margin-bottom: 2px;
         }
 
     </style>
     <!--Black Background-->
-    <title>☕ Shikoba</title>
+    <title>LUDU - Trang chủ</title>
 </head>
 <body>
 
 <!--Header Start-->
 <header class="p-3 bg-dark text-white">
     <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <div class="d-flex flex-wrap align-items-center justify-content-center">
             <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
                     <use xlink:href="#bootstrap"></use>
                 </svg>
             </a>
-            <img src="images/logo.png" width="60px"/>
-            <ul class="snip1284 me-lg-auto">
+            <img src="images/logo1.png" width="100px"/>
+            <ul class="snip1378 me-lg-auto" style="margin-left: 120px;"> 
                 <li><a href="index.php" class="nav-link px-2 text-secondary">HOME</a></li>
                 <li><a href="menu/menu.php" class="nav-link px-2 text-white">MENU</a></li>
-                <li><a href="urunler.php" class="nav-link px-2 text-white">Ürünler</a></li>
-                <li><a href="kendinyap.php" class="nav-link px-2 text-white">Kendin Yap</a></li>
-                <li><a href="hakkimizda.php" class="nav-link px-2 text-white">Hakkımızda</a></li>
+                <li><a href="product.php" class="nav-link px-2 text-white">PRODUCT</a></li>
+                <li><a href="introduce.php" class="nav-link px-2 text-white">INTRODUCE</a></li>
+                <li><a href="aboutUs.php" class="nav-link px-2 text-white">ABOUT US</a></li>
             </ul>
-            <a class="btn btn-outline-light btn-floating m-1" href="cart.php" role="button"><i
-                        class="fas fa-shopping-cart"></i></a>
-            <div class="text-end">
-                <?php
-                if (!empty($_SESSION['user_mail'])) { ?> 
-                <div class="dropdown">
-                    <button class="btn btn-danger text-capitalize" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><?php echo $_SESSION['user_name']; ?></button>
-                       <ul class="dropdown-menu">
-                           <li><a class="dropdown-item" href="#">Profile</a></li>
+            <div class="col-md-3 col-lg-2 button-outline">
+                    
+                      <a class="btn cart btn-outline-light btn-floating m-1" href="cart.php" role="button"><i
+                           class="fas fa-shopping-cart"></i></a>
+                          <div class="btn-login-logout">
+                          <?php
+                           if (!empty($_SESSION['user_mail'])) { ?> 
+                            <div class="dropdown">
+                           <button class="btn-log-in btn btn-danger text-capitalize" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><?php echo $current_username; ?></button>
+                           <ul class="dropdown-menu">
+                           <li><a class="dropdown-item" href="./profile.php">Profile</a></li>
                            <li><a class="dropdown-item" href="./changepassword.php">Change Password</a></li>
                        </ul>
-                </div>
-                <a href="logout.php" type="button" class="btn btn-outline-light me-2">Log out</a>
-                <?php
-                } else { ?>
-                    <a href="login.php" type="button" class="btn btn-outline-light me-2">Sign in/out</a>
-                    <?php
-                }
-                ?>
+                   
+
+                        <a href="logout.php" type="button" class="btn btn-outline-light me-2">Log out</a>
+                        <?php
+                        } else { ?>
+                            <a href="login.php" type="button" class="btn btn-outline-light me-2">Sign in/out</a>
+                            <?php
+                        }
+                        ?>  
+                    </div>
             </div>
-            
         </div>
     </div>
 </header>
@@ -112,13 +158,13 @@ include("mysql/baglan.php");
         </div>
         <div class="carousel-inner" style=" width:100%; height: 700px !important;">
             <div class="carousel-item active">
-                <img src="images/carousel/slider1.jpg" class="d-block w-100" alt="...">
+                <img src="./images/index/tsvety-frukty-iagody.jpg" class="d-block w-100" alt="...">
             </div>
             <div class="carousel-item">
-                <img src="images/carousel/slider2.jpg" class="d-block w-100" alt="...">
+                <img src="./images/index/6-63037_fruits.jpg" class="d-block w-100" alt="...">
             </div>
             <div class="carousel-item">
-                <img src="images/carousel/slider3.jpg" class="d-block w-100" alt="...">
+                <img src="./images/index/still-life-with-flowers-fruits-table_392895-86331.webp" class="d-block w-100" alt="...">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
@@ -138,31 +184,31 @@ include("mysql/baglan.php");
     <!--Cards Start-->
     <div class="card-group">
         <div class="card bg-dark">
-            <img src="images/cards2.jpg" class="card-img-top" alt="...">
+            <img src="https://i.pinimg.com/564x/80/c4/b7/80c4b726ef6187a25ba9d1eb09c12656.jpg" class="card-img-top" alt="...">
             <div class="card-body">
                 <div class="d-grid gap-2 col-6 mx-auto">
-                    <a class="btn btn-secondary btn-lg btn-block" href="menu/menu.php"
-                       style="background-color: rgb(200, 150, 0);" type="button">MENÜ</a>
+                    <a class="btn btn-danger text-capitalize"  href="menu/menu.php"
+                        type="button">MENU</a>
                 </div>
                 <p class="card-text"></p>
             </div>
         </div>
         <div class="card bg-dark">
-            <img src="images/cards3.jpg" class="card-img-top" alt="...">
+            <img src="https://i.pinimg.com/564x/bd/40/17/bd4017dff143b63b363736ec66c82fcc.jpg" class="card-img-top" alt="...">
             <div class="card-body">
                 <div class="d-grid gap-2 col-6 mx-auto">
-                    <a class="btn btn-secondary btn-lg btn-block" href="urunler.php"
-                       style="background-color: rgb(200, 150, 0);" type="button">ÜRÜNLER</a>
+                    <a class="btn btn-danger text-capitalize" href="product.php"
+                     type="button">PRODUCT</a>
                 </div>
                 <p class="card-text"></p>
             </div>
         </div>
         <div class="card bg-dark">
-            <img src="images/cards1.jpg" class="card-img-top" alt="...">
+            <img src="https://i.pinimg.com/564x/18/6c/b5/186cb5d86c94cb42edb584c312d68538.jpg" class="card-img-top" alt="...">
             <div class="card-body">
                 <div class="d-grid gap-2 col-6 mx-auto">
-                    <a class="btn btn-secondary btn-lg btn-block" href="kendinyap.php"
-                       style="background-color: rgb(200, 150, 0);" type="button">KENDİN YAP</a>
+                    <a class="btn btn-danger text-capitalize" href="introduce.php"
+                     type="button">INTRODUCE</a>
                 </div>
                 <p class="card-text"></p>
             </div>
@@ -177,14 +223,14 @@ include("mysql/baglan.php");
             <!-- Section: Social media -->
             <section class="mb-4">
                 <!-- Facebook -->
-                <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/ShikobaCoffee/"
+                <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/a123.1e/"
                    role="button" target="_blank"><i class="fab fa-facebook-f"></i></a>
 
                 <!-- Twitter -->
                 <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-twitter"></i></a>
                 <!-- Instagram -->
-                <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/shikobacoffee/"
-                   role="button" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/duy.tranthe.9003/"
+                   role="button" target="_blank"><i class="fab fa-facebook-f"></i></a>
 
             </section>
             <!-- Section: Social media -->
@@ -194,7 +240,7 @@ include("mysql/baglan.php");
         <!-- Copyright -->
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
             © 2022 Copyright:
-            <a class="text-white" href="www.shikoba.com">shikoba.com</a>
+            <a class="text-white" href="www.ludustore.com.vn">ludustore.com.vn</a>
         </div>
         <!-- Copyright -->
     </footer>
@@ -208,4 +254,3 @@ include("mysql/baglan.php");
         crossorigin="anonymous"></script>
 </body>
 </html>
-

@@ -1,7 +1,20 @@
 <?php
 
 session_start();
-include("../mysql/baglan.php");
+include("../mysql/connect.php");
+
+//Kiểm tra nếu đã đăng nhập (get user_mail == true) sẽ lấy giá trị từ database
+if(session_id() == '') session_start();
+if (isset($_SESSION['user_mail']) == true) {
+    //GET CURRENT VALUES FROM DATABASE (User_name)
+    $conn_gcv = mysqli_connect("localhost", "tanluc1", "tanluc1", "ludu");
+    $gcv_mail = $_SESSION['user_mail'];
+    $gcv_sql = "SELECT * FROM Users WHERE user_mail='$gcv_mail'";
+    $gcv_query = mysqli_query($conn_gcv, $gcv_sql);
+    if ($row = mysqli_fetch_assoc($gcv_query)) { 
+	$current_username = $row['user_name'];
+    }
+} 
 
 ?>
 
@@ -11,7 +24,7 @@ include("../mysql/baglan.php");
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/jpg" href="images/logo.png"/>
+    <link rel="icon" type="image/jpg" href="../images/logo1.png"/>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
           integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -22,55 +35,103 @@ include("../mysql/baglan.php");
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="../css-file/design2.css">
+    <link rel="stylesheet" href="../css-file/script.js">
+    <link rel="stylesheet" href="../css-file/style.css">
 
-    <title>☕ Shikoba</title>
-    <!--Header Start-->
-    <header class="p-3 bg-dark text-white">
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-                        <use xlink:href="#bootstrap"></use>
-                    </svg>
-                </a>
-                <img src="../images/logo.png" width="60px"/>
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="../index.php" class="nav-link px-2 text-white">Anasayfa</a></li>
-                    <li><a href="../menu/menu.php" class="nav-link px-2 text-secondary">Menü</a></li>
-                    <li><a href="../urunler.php" class="nav-link px-2 text-white">Ürünler</a></li>
-                    <li><a href="../kendinyap.php" class="nav-link px-2 text-white">Kendin Yap</a></li>
-                    <li><a href="../hakkimizda.php" class="nav-link px-2 text-white">Hakkımızda</a></li>
-                </ul>
-                <a class="btn btn-outline-light btn-floating m-1" href="cart.php" role="button"><i
-                            class="fas fa-shopping-cart"></i></a>
-                <div class="text-end">
-                    <?php
-                    if (!empty($_SESSION['user_mail'])) { ?>
-                        <a href="../logout.php" type="button" class="btn btn-outline-light me-2">Çıkış Yap</a>
-                        <a  type="button" class="btn btn-outline-light me-2"><?php echo $_SESSION['user_name']; ?></a>
+    <title>LUDU - Cửa hàng</title>
+<!--Header Start-->
+<header class="p-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+            </a>
+            <img src="../images/logo1.png" width="100px"/>
+            <ul class="snip1378 me-lg-auto" style="margin-left: 120px;"> 
+                <li><a href="../index.php" class="nav-link px-2 text-white">HOME</a></li>
+                <li><a href="#" class="nav-link px-2 text-secondary">MENU</a></li>
+                <li><a href="../product.php" class="nav-link px-2 text-white">PRODUCT</a></li>
+                <li><a href="../introduce.php" class="nav-link px-2 text-white">INTRODUCE</a></li>
+                <li><a href="../aboutUs.php" class="nav-link px-2 text-white">ABOUT US</a></li>
+            </ul>
+            <div class="col-md-3 col-lg-2 button-outline">
+                    
+                      <a class="btn cart btn-outline-light btn-floating m-1" href="../cart.php" role="button"><i
+                           class="fas fa-shopping-cart"></i></a>
+                          <div class="btn-login-logout">
+                          <?php
+                           if (!empty($_SESSION['user_mail'])) { ?> 
+                            <div class="dropdown">
+                           <button class="btn-log-in btn btn-danger text-capitalize" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><?php echo $current_username; ?></button>
+                           <ul class="dropdown-menu">
+                           <li><a class="dropdown-item" href="../profile.php">Profile</a></li>
+                           <li><a class="dropdown-item" href="./changepassword.php">Change Password</a></li>
+                       </ul>
+                   
+
+                        <a href="../logout.php" type="button" class="btn btn-outline-light me-2">Log out</a>
                         <?php
-                    } else { ?>
-                        <a href="../login.php" type="button" class="btn btn-outline-light me-2">Giriş Yap</a>
-                        <a href="../register.php" type="button" class="btn btn-warning">Kayıt Ol</a>
-                        <?php
-                    }
-                    ?>
-                </div>
-
-
+                        } else { ?>
+                            <a href="../login.php" type="button" class="btn btn-outline-light me-2">Sign in/out</a>
+                            <?php
+                        }
+                        ?>   
+                    </div>
             </div>
         </div>
-    </header>
-    <!--Header End-->
+    </div>
+</header>
+<!--Header End-->
     <style>
-        body {
-            font-family: "Libre Baskerville", serif;
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 30px;
-            background-color: #0c0f15;
-            overflow-x: hidden;
-            color: #ababab;
+        
+        /*
+            NAVBAR MENU
+        */
+        .bg-dark{
+           background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary:hover{
+            
+            color: #d9534f;
+        }
+
+        .container-fluid {
+            border-top: 4px solid #d9534f;
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+
+        .dropdown .btn-primary {
+            background-color: white;
+        }
+
+        .dropdown-menu {
+            background-color: white;
+        }
+        .text-white{
+            font-size: 1.6rem;
+        }
+        .button-outline{
+            display: flex;
+            margin-bottom: 14px;
+        }
+        .btn-login-logout{
+            display: flex;
+            align-items: center;
+        }
+        .cart{
+            display: flex;
+            align-items: center;
+            margin-left: 1px;
+        }
+
+        .btn-log-in{
+            margin-bottom: 2px;
         }
 
 
@@ -243,7 +304,7 @@ include("../mysql/baglan.php");
             background-repeat: no-repeat;
             background-size: cover;
             vertical-align: middle;
-            border-top: 4px solid #ffc107;
+            border-top: 4px solid #d9534f;
         }
 
         .page-home .overlay {
@@ -299,7 +360,7 @@ include("../mysql/baglan.php");
 
         .hexagon-item:hover .hex-item div::before,
         .hexagon-item:hover .hex-item div::after {
-            background-color: #ffc107;
+            background-color: #d9534d;
         }
 
         .hexagon-item:hover .hex-content svg {
@@ -499,7 +560,7 @@ include("../mysql/baglan.php");
 
 
         .hexagon-item:hover .icon i {
-            color: #ffc107;
+            color: #d9534f;
             transition: 0.6s;
 
         }
@@ -575,7 +636,7 @@ include("../mysql/baglan.php");
                     <div class="row">
                         <div class="col-xs-12 col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
                             <div class="page-title  home text-center">
-                                  <span class="heading-page"> Shikoba Coffee Menü
+                                  <span class="heading-page" style="color: #d9534f;"> LUDU STORE MENU
                                   </span>
                                 <p class="mt20"></p>
                             </div>
@@ -592,12 +653,12 @@ include("../mysql/baglan.php");
                                         <div></div>
                                         <div></div>
                                     </div>
-                                    <a class="hex-content" href="sicak.php">
+                                    <a class="hex-content" href="./freshFruit.php">
                                             <span class="hex-content-inner">
                                                 <span class="icon">
-                                                    <i class="fa fa-coffee"></i>
+                                                <i class='fas fa-apple-alt'></i>
                                                 </span>
-                                                <span class="title">Sıcak Kahveler</span>
+                                                <span class="title">Fruit</span>
                                             </span>
                                         <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1"
                                              xmlns="http://www.w3.org/2000/svg">
@@ -617,12 +678,12 @@ include("../mysql/baglan.php");
                                         <div></div>
                                         <div></div>
                                     </div>
-                                    <a class="hex-content" href="soguk.php">
+                                    <a class="hex-content" href="./freshFlower.php">
                                             <span class="hex-content-inner">
                                                 <span class="icon">
-                                                    <i class="fa fa-glass-whiskey"></i>
+                                                <i class='fas fa-seedling'></i>
                                                 </span>
-                                                <span class="title">Soğuk Kahveler</span>
+                                                <span class="title">FLOWER</span>
                                             </span>
                                         <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1"
                                              xmlns="http://www.w3.org/2000/svg">
@@ -642,113 +703,12 @@ include("../mysql/baglan.php");
                                         <div></div>
                                         <div></div>
                                     </div>
-                                    <a class="hex-content" href="caylar.php">
+                                    <a class="hex-content" href="./package.php">
                                             <span class="hex-content-inner">
                                                 <span class="icon">
-                                                    <i class="fa fa-mug-hot"></i>
+                                                <i class='fa fa-shopping-bag'></i>
                                                 </span>
-                                                <span class="title">Çaylar</span>
-                                            </span>
-                                        <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z"
-                                                  fill="#1e2530"></path>
-                                        </svg>
-                                    </a>
-                                </div>
-                                <div class="hexagon-item">
-                                    <div class="hex-item">
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                    </div>
-                                    <div class="hex-item">
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                    </div>
-                                    <a class="hex-content" href="cooler-smoothies.php">
-                                            <span class="hex-content-inner">
-                                                <span class="icon">
-                                                    <i class="fab fa-gulp"></i>
-                                                </span>
-                                                <span class="title">Cooler & Smoothies</span>
-                                            </span>
-                                        <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z"
-                                                  fill="#1e2530"></path>
-                                        </svg>
-                                    </a>
-                                </div>
-                                <div class="hexagon-item">
-                                    <div class="hex-item">
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                    </div>
-                                    <div class="hex-item">
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                    </div>
-                                    <a class="hex-content" href="atistirmaliklar.php">
-                                            <span class="hex-content-inner">
-                                                <span class="icon">
-                                                    <i class="fas fa-hamburger"></i>
-                                                </span>
-                                                <span class="title">Atıştırmalıklar</span>
-                                            </span>
-                                        <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z"
-                                                  fill="#1e2530"></path>
-                                        </svg>
-                                    </a>
-                                </div>
-                                <div class="hexagon-item">
-                                    <div class="hex-item">
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                    </div>
-                                    <div class="hex-item">
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                    </div>
-                                    <a class="hex-content" href="tatlilar.php">
-                                            <span class="hex-content-inner">
-                                                <span class="icon">
-                                                    <i class="fas fa-cheese"></i>
-                                                </span>
-                                                <span class="title">Tatlılar</span>
-                                            </span>
-                                        <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z"
-                                                  fill="#1e2530"></path>
-                                        </svg>
-                                    </a>
-                                </div>
-                                <div class="hexagon-item">
-                                    <div class="hex-item">
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                    </div>
-                                    <div class="hex-item">
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                    </div>
-                                    <a class="hex-content" href="#">
-                                            <span class="hex-content-inner">
-                                                <span class="icon">
-                                                    <i class="" ></i>
-                                                </span>
-
-                                                <span class="title"></span>
+                                                <span class="title">Packaging</span>
                                             </span>
                                         <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1"
                                              xmlns="http://www.w3.org/2000/svg">
@@ -768,34 +728,39 @@ include("../mysql/baglan.php");
         </div>
 
 
-        <!--Footer Start-->
-        <footer class="bg-dark text-center text-white">
-            <!-- Grid container -->
-            <div class="container p-4 pb-0">
-                <!-- Section: Social media -->
-                <section class="mb-4">
-                    <!-- Facebook -->
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/ShikobaCoffee/"
-                       role="button" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <!--Footer Start-->
+    <footer class="bg-dark text-center text-white">
+        <!-- Grid container -->
+        <div class="container p-4 pb-0">
+            <!-- Section: Social media -->
+            <section class="mb-4">
+                <!-- Facebook -->
+                <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/a123.1e/"
+                   role="button" target="_blank"><i class="fab fa-facebook-f"></i></a>
 
-                    <!-- Twitter -->
-                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
-                                class="fab fa-twitter"></i></a>
-                    <!-- Instagram -->
-                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/shikobacoffee/"
-                       role="button" target="_blank"><i class="fab fa-instagram"></i></a>
+                <!-- Twitter -->
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-twitter"></i></a>
+                <!-- Instagram -->
+                <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/duy.tranthe.9003/"
+                   role="button" target="_blank"><i class="fab fa-facebook-f"></i></a>
 
-                </section>
-                <!-- Section: Social media -->
-            </div>
-            <!-- Grid container -->
+            </section>
+            <!-- Section: Social media -->
+        </div>
+        <!-- Grid container -->
 
-            <!-- Copyright -->
-            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-                © 2022 Copyright:
-                <a class="text-white" href="www.shikoba.com">shikoba.com</a>
-            </div>
-            <!-- Copyright -->
-        </footer>
-        <!--Footer End-->
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2022 Copyright:
+            <a class="text-white" href="www.ludustore.com.vn">ludustore.com.vn</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <!--Footer End-->
+
     </main>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
